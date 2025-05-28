@@ -12,7 +12,9 @@ func main() {
 
 	serverMux := http.NewServeMux()
 
-	serverMux.Handle("/", http.FileServer(http.Dir(filepathRoot)))
+	serverMux.Handle("/app/", http.StripPrefix("/app", http.FileServer(http.Dir(filepathRoot))))
+
+	serverMux.HandleFunc("/healthz", healthz)
 
 	server := &http.Server{
 		Handler: serverMux,
@@ -21,5 +23,12 @@ func main() {
 
 	log.Printf("Serving on port %s\n", port)
 	log.Fatal(server.ListenAndServe())
+
+}
+
+func healthz(w http.ResponseWriter, req *http.Request) {
+	w.Header().Add("Content-Type", "text/plain; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(http.StatusText(http.StatusOK)))
 
 }
