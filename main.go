@@ -31,9 +31,9 @@ func main() {
 
 	serverMux.Handle("/app/", middlewareLog(apiCfg.middlewareMetricsInc(fileHandler)))
 
-	serverMux.HandleFunc("GET /healthz", healthz)
-	serverMux.HandleFunc("GET /metrics", apiCfg.FileServerHitsHandler)
-	serverMux.HandleFunc("POST /reset", apiCfg.FileServerHitsResetHandler)
+	serverMux.HandleFunc("GET /api/healthz", healthz)
+	serverMux.HandleFunc("GET /api/metrics", apiCfg.FileServerHitsHandler)
+	serverMux.HandleFunc("POST /api/reset", apiCfg.FileServerHitsResetHandler)
 
 	server := &http.Server{
 		Handler: serverMux,
