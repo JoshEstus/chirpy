@@ -23,7 +23,8 @@ func main() {
 
 	serverMux.Handle("/app/", middlewareLog(apiCfg.middlewareMetricsInc(fileHandler)))
 
-	serverMux.HandleFunc("GET /api/healthz", healthz)
+	serverMux.HandleFunc("GET /api/healthz", HealthzHandler)
+	serverMux.HandleFunc("POST /api/validate_chirp", ValidateChirpHandler)
 	// Admin
 	serverMux.HandleFunc("GET /admin/metrics", apiCfg.handlerMetrics)
 	serverMux.HandleFunc("POST /admin/reset", apiCfg.FileServerHitsResetHandler)
@@ -36,10 +37,4 @@ func main() {
 	log.Printf("Serving on port %s\n", port)
 	log.Fatal(server.ListenAndServe())
 
-}
-
-func healthz(w http.ResponseWriter, req *http.Request) {
-	w.Header().Add("Content-Type", "text/plain; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(http.StatusText(http.StatusOK)))
 }
