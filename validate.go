@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"slices"
+	"strings"
 	"unicode/utf8"
 )
 
@@ -18,7 +20,7 @@ func ValidateChirpHandler(w http.ResponseWriter, req *http.Request) {
 		Body string `json:"body"`
 	}
 	type validReturn struct {
-		Valid bool `json:"valid"`
+		CleanedBody string `json:"cleaned_body"`
 	}
 
 	const maxChirpLength = 140
@@ -38,7 +40,28 @@ func ValidateChirpHandler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// Filter words
+	cleaned := ProfaneFilter(params.Body)
+
 	respondWithJSON(w, http.StatusOK, validReturn{
-		Valid: true,
+		CleanedBody: cleaned,
 	})
+}
+
+func ProfaneFilter(s string) string {
+	profaneWords := []string{"kerfuffle", "sharbert", "fornax"}
+
+	sSplit := strings.Split(s, " ")
+
+	newWord := make([]string, 0)
+	for _, word := range sSplit {
+		if slices.Contains(profaneWords, strings.ToLower(word)) {
+			newWord = append(newWord, "****")
+		} else {
+			newWord = append(newWord, word)
+		}
+
+	}
+	return strings.Join(newWord, " ")
+
 }
