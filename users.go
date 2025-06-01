@@ -45,7 +45,7 @@ func (cfg *apiConfig) CreateUserHandler(w http.ResponseWriter, req *http.Request
 			CreatedAt: newUser.CreatedAt,
 			UpdatedAt: newUser.UpdatedAt,
 			Email:     newUser.Email,
-		}
+		},
 	})
 
 }
