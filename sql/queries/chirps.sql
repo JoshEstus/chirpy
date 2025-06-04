@@ -14,3 +14,9 @@ SELECT *
 FROM chirps
 where 1=1
 order by created_at ASC;
+
+-- name: GetChirp :one
+SELECT *
+FROM chirps
+WHERE 1 = 1
+AND id = $1;
