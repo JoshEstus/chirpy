@@ -57,6 +57,7 @@ func main() {
 	serverMux.HandleFunc("GET /api/healthz", HealthzHandler)
 	serverMux.HandleFunc("POST /api/users", apiCfg.CreateUserHandler)
 	serverMux.HandleFunc("POST /api/chirps", apiCfg.AddChirpHandler)
+	serverMux.HandleFunc("GET /api/chirps", apiCfg.GetAllChirpsHandler)
 
 	// Admin
 	serverMux.HandleFunc("GET /admin/metrics", apiCfg.handlerMetrics)

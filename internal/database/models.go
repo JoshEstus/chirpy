@@ -11,7 +11,7 @@ import (
 )
 
 type Chirp struct {
-	ID        uuid.NullUUID
+	ID        uuid.UUID
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Body      string
@@ -19,7 +19,7 @@ type Chirp struct {
 }
 
 type User struct {
-	ID        uuid.NullUUID
+	ID        uuid.UUID
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Email     string

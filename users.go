@@ -41,7 +41,7 @@ func (cfg *apiConfig) CreateUserHandler(w http.ResponseWriter, req *http.Request
 
 	respondWithJSON(w, http.StatusCreated, response{
 		User: User{
-			ID:        newUser.ID.UUID,
+			ID:        newUser.ID,
 			CreatedAt: newUser.CreatedAt,
 			UpdatedAt: newUser.UpdatedAt,
 			Email:     newUser.Email,

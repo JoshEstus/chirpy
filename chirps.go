@@ -60,7 +60,7 @@ func (cfg *apiConfig) AddChirpHandler(w http.ResponseWriter, req *http.Request) 
 
 	respondWithJSON(w, http.StatusCreated, response{
 		Chirp: Chirp{
-			ID:        newChirp.ID.UUID,
+			ID:        newChirp.ID,
 			CreatedAt: newChirp.CreatedAt,
 			UpdatedAt: newChirp.UpdatedAt,
 			Body:      newChirp.Body,
@@ -101,4 +101,29 @@ func ProfaneFilter(s string) string {
 	}
 	return strings.Join(newWord, " ")
 
+}
+
+func (cfg *apiConfig) GetAllChirpsHandler(w http.ResponseWriter, req *http.Request) {
+	chirps, err := cfg.db.GetAllChirps(req.Context())
+	if err != nil {
+		log.Printf("error getting all chirps")
+		respondWithError(w, http.StatusInternalServerError, "Couldn't retrieve chirps", err)
+		return
+	}
+
+	returnChirps := []Chirp{}
+	for _, chirp := range chirps {
+		log.Printf("Chirp %s", chirp)
+		returnChirps = append(returnChirps, Chirp{
+			ID:        chirp.ID,
+			CreatedAt: chirp.CreatedAt,
+			UpdatedAt: chirp.UpdatedAt,
+			Body:      chirp.Body,
+			UserID:    chirp.UserID,
+		})
+	}
+
+	log.Printf("Return Chirps %v", returnChirps)
+
+	respondWithJSON(w, http.StatusOK, returnChirps)
 }
