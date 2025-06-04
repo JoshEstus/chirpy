@@ -53,9 +53,11 @@ func main() {
 
 	serverMux.Handle("/app/", middlewareLog(apiCfg.middlewareMetricsInc(fileHandler)))
 
+	// API
 	serverMux.HandleFunc("GET /api/healthz", HealthzHandler)
-	serverMux.HandleFunc("POST /api/validate_chirp", ValidateChirpHandler)
 	serverMux.HandleFunc("POST /api/users", apiCfg.CreateUserHandler)
+	serverMux.HandleFunc("POST /api/chirps", apiCfg.AddChirpHandler)
+
 	// Admin
 	serverMux.HandleFunc("GET /admin/metrics", apiCfg.handlerMetrics)
 	serverMux.HandleFunc("POST /admin/reset", apiCfg.FileServerHitsResetHandler)
